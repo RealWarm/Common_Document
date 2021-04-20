@@ -184,38 +184,23 @@
 
 "메모는 자기 자신에 대한 지시이다."
 
+====================================15강 회사는 문서로 이야기한다.
+
+보고서를 최종적으로 결정하는 사람을 고려해야함
+
+대안을 준비하라
+
+긴급성을 요구하는가? >> 빨리 초안 작성후 방향을 검토하는 것이 좋음
+
+정확성을 요구한다면 >> 기본적인 조사와 고민을 바탕으로 상사에게 질문해야 함
+
+
+바바라 민토의 피라미드 구조
 
 
 
 
 
 
-connect sys/manager as sysdba
-alter user hr identified by hr account unlock;
-connect hr/hr
-select tname from tab;
 
-create USER
-    book_ex
-IDENTIFIED BY
-    book_ex
-DEFAULT TABLESPACE USERS
-TEMPORARY TABLESPACE TEMP;
-
-CREATE USER
-    all_care
-IDENTIFIED BY
-    all_care
-DEFAULT TABLESPACE USERS
-TEMPORARY TABLESPACE TEMP;
-
-GRANT CONNECT, DBA TO BOOK_EX;
-GRANT CONNECT, DBA TO all_care;
-
-SELECT
-    dbms_xdb.gethttpport() 
-from 
-    dual;
-    
-exec dbms_xdb.sethttpport(8081);
 
