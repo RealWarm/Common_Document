@@ -1,0 +1,162 @@
+http://localhost:8080
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+- 오라클에 테이블 스페이스 만들고, 계정만들고, 권한부여하고,
+
+## TableSpace
+[1] 정의
+- Oracle에서는 Data file이라는 물리적 파일 형태 저장하고, 이러한 Data file이 하나 이상 모여서 Tablespace라는 논리적 저장공간을 형성합니다
+
+- 테이블 스페이스는 하나의 db안에 가장 큰 논리적 저장공간이다
+
+- 데이터 저장 단위 중 가장 상위에 있는 단위를 테이블 스페이스
+- 데이터 저장 단위는 물리적, 논리적단위로 나눌 수 있습니다. 
+- 물리적 단위는 파일을 의미하고 
+- 논리적 단위는 데이터블록 -> 익스텐트 -> 세그먼트 -> 테이블스페이스 이렇게 나뉩니다. 
+- 데이터블록 여러개가 모여 익스텐트 하나를 만들고, 익스텐트 여러개가 모여 하나의 세그먼트를 구성하는 식입니다.
+
+[3] Tablespace의 종류
+
+Permanent Tablespace
+- 가장 일반적인 테이블스페이스로 데이터를 축적용도로 사용되는 공간
+- Undo와 Temporary와는 다르게, 고의적으로 삭제하지 않는한 영구적으로 보존되는 객체들을 저장하기 위한 용도
+
+테이블 스페이스가 왜필요하지?? >> 테이블 스페이스란 무엇일까? >> 어떨때 사용하지?
+
+
+[4] 테이블 스페이스 작동방식
+
+오라클 에서는 테이블스페이스라고 불리우는 테이블이 저장될 공간을 먼저 만들고 나서 테이블을 생성합니다. 테이블에 실질적으로 저장되는 장소라고 생각하시면 됩니다. 이러한 작동방식은 각각의 테이블을 테이블스페이스별로 나누어서 관리와 퍼포먼스의 향상을 가지고 옵니다. 테이블스페이스를 생성하면 정의된 용량만큼 미리 확보한 테이블스페이스가 생성되어지고 생성되어진 테이블스페이스에 테이블의 데이타가 저장됩니다. 이렇게 설정된 데이터 스페이스에 용량이 가득차면 오라클 서버가 죽습니다. 그러므로 관리를 잘해주어야합니다. 하지만 또 테이블 스페이스마다 용량을 너무나도 크게 잡아버리면 문제가 되는게 용량을 적게 차지하고 있다고해서 가변적으로 max용량이 줄어들지는 않습니다. 고로 또 용량낭비가 되어버릴 수 있는 문제가 될 수 있습니다.. 
+
+골치아프시죠?? 괜찮습니다. 테이블 스페이스는 자동으로 할당해주는 부분이 많아 크게 DBA가 아니라면 건드릴 필요가 없습니다. 아마 그럴 권한도 없으실거에요. 자동으로 할당해주는 부분을 간략하게 소개드리자면 만약 테이블 생성 시 테이블  스페이스를 지정해주지 않으면 오라클 서버에서 자동으로 지정해주기도 하고 또 오라클은 유저를 생성하면서 디폴트 테이블 스페이스를 자동으로 지정해줍니다. 테이블을 만들게 되면 그 테이블 스페이스에 들어 가게되고 그 테이블 스페이스는 테이블 스페이스 생성때 설정하는 경로에 위치하게됩니다. DBA가 아니라 오라클을 활용하는 개발자 정도라면 크게 신경쓰지 않으셔도 됩니다. 
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+기본 명령어
+
+현재 생성된 계정 확인
+SELECT * FROM DBA_USERS;
+SELECT * FROM ALL_USERS;
+
++++++++++++++++ 기본 정보 +++++++++++++++
+connect sys/manager as sysdba
+alter user hr identified by hr account unlock;
+connect hr/hr
+select tname from tab;
+
+create USER
+	com
+IDENTIFIED BY
+    com
+DEFAULT TABLESPACE USERS
+TEMPORARY TABLESPACE TEMP;
+
+CREATE USER COM IDENTIFIED BY COM
+
+CREATE USER
+    all_care
+IDENTIFIED BY
+    all_care
+DEFAULT TABLESPACE USERS
+TEMPORARY TABLESPACE TEMP;
+
+GRANT CONNECT, DBA TO com;
+
+SELECT
+    dbms_xdb.gethttpport() 
+from 
+    dual;
+    
+exec dbms_xdb.sethttpport(8081);
+=========================================================================
++++++++++++++++ 테이블 스페이스 +++++++++++++++
+-- @@@ 테이블 스페이스 생성
+create tablespace cen_care --[테이블 스페이스명]
+datafile 'D:\dev\oradata' --파일경로
+size 10M --초기 데이터 파일 크기 설정
+autoextend on next 10M -- 초기 크기 공간을 모두 사용하는 경우 자동으로 파일의 크기가 커지는 기능
+maxsize 100M -- 데이터파일이 최대로 커질 수 있는 크기 지정 기본값 = unlimited
+uniform size 1M -- EXTENT 한개의 크기를 설정
+
+-- @@@ 전체 테이블 스페이스 조회
+select * from dba_tablespaces;
+
+-- @@@ 전체 테이블 스페이스 경로 및 용량 조회
+SELECT    
+    A.TABLESPACE_NAME "테이블스페이스명",
+    A.FILE_NAME "파일경로",
+    (A.BYTES - B.FREE)    "사용공간",
+    B.FREE                 "여유 공간",
+    A.BYTES                "총크기",
+    TO_CHAR( (B.FREE / A.BYTES * 100) , '999.99')||'%' "여유공간"
+FROM
+   (
+     SELECT FILE_ID,
+            TABLESPACE_NAME,
+            FILE_NAME,
+            SUBSTR(FILE_NAME,1,200) FILE_NM,
+            SUM(BYTES) BYTES
+       FROM DBA_DATA_FILES
+     GROUP BY FILE_ID,TABLESPACE_NAME,FILE_NAME,SUBSTR(FILE_NAME,1,200)
+   ) A,
+   (
+     SELECT TABLESPACE_NAME,
+            FILE_ID,
+            SUM(NVL(BYTES,0)) FREE
+       FROM DBA_FREE_SPACE
+    GROUP BY TABLESPACE_NAME,FILE_ID
+   ) B
+WHERE 
+    A.TABLESPACE_NAME=B.TABLESPACE_NAME
+    AND A.FILE_ID = B.FILE_ID;
+    
+-- @@테이블의 테이블 스페이스 변경
+alter table [테이블명] move tablespace [테이블 스페이스명]
+
+
+-- @@@ 테이블 스페이스 속성 변경
+
+-- 1. 해당 테이블스페이스의 물리적인 파일의 이름 또는 위치변경
+alter tablespace rename [A] to [B]
+
+-- 2. 해당 테이블스페이스의 용량을 1024메가로 변경
+alter tablespace [테이블스페이스명] add datafile [추가할데이터파일명] size 1024M;  
+
+-- 3. 해당 데이터파일경로에 해당하는 테이블스페이스의 크기가 FULL이 되면 자동으로 100메가씩 증가.
+alter database datafile [데이터파일경로] 'autoextend on next 100m maxsize unlmited;
+
+
+-- ### 테이블 스페이스 삭제
+-- 1. 테이블스페이스 내의 객체(테이블,인덱스등)를 전체 삭제
+drop tablespace [테이블 스페이스명] include contents; 
+
+-- 2. 테이블스페이스의 모든 세그먼트를 삭제. (데이타가 있는 테이블 스페이스 제외)
+drop tablespace [테이블 스페이스명] including contents; 
+
+-- 3.삭제된 테이블스페이스를 참조하는 다른 테이블스페이스의 테이블로부터 참조무결성 제약 조건을 삭제
+drop tablespace [테이블 스페이스명] cascade constraints;
+
+-- 4. 테이블 스페이스의 물리적파일까지 삭제
+drop tablespace [테이블 스페이스명] including contents and datafiles;
+
+
+-- ###@@@ 도현이
+-- 1. 테이블 스페이스 생성
+create tablespace ts_com 
+DATAFILE 'C:/ORACLEXE/APP/ORACLE/app_data.dbf' 
+SIZE 100M
+AUTOEXTEND ON NEXT 10M;
+
+-- 2. 유저 생성
+CREATE USER com 
+identified by com 
+default tablespace ts_com;
+
+-- 3. 권한 부여
+GRANT connect, resource, dba to com;
+
+인사 안진수 부장 >> 급여통장 사본
+
+
+
+
+'dependencies.dependency.systemPath' for ojdbc:ojdbc:jar should not point at files within the project directory, ${basedir}/src/main/webapp/WEB-INF/lib/ojdbc8.jar will be unresolvable by dependent projects @ line 558, column 25
