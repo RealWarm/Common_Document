@@ -1,0 +1,62 @@
+package com.hclim.encrypt;
+
+import org.apache.poi.ddf.EscherSerializationListener;
+
+import egovframework.com.utl.sim.service.EgovFileScrty;
+
+public class TestEncrypt {
+   
+   public static void main(String[] args) throws Exception {
+         
+      for(int i = 201; i < 301; i++) {
+         //일반
+//         String userId = String.format("USER%04d", i);
+//         String userPw = "rhdxhd12";
+//         String userName = String.format("사용자%04d", i);
+//         String ESNTL_ID = String.format("USRCNFRM_%011d", i+3);
+//         String fpw = EgovFileScrty.encryptPassword(userPw,userId);
+         
+         //업무
+//         String emplyrId = String.format("master%04d", i);
+//         String emplyrPw = "rhdxhd12";
+//         String emplyrName = String.format("업무사용자%04d", i);
+//         String ESNTL_ID = String.format("USRCNFRM_%011d", i+3);
+//         String fpw = EgovFileScrty.encryptPassword(emplyrPw,emplyrId);
+         
+         //기업
+         String entId = String.format("ent%04d", i);
+         String entPw = "rhdxhd12";
+         String entName = String.format("기업사용자%04d", i);
+         String ESNTL_ID = String.format("USRCNFRM_%011d", i+3);
+         String fpw = EgovFileScrty.encryptPassword(entPw,entId);
+         
+//         일반사용자
+//         System.out.println("INSERT INTO COMTNGNRLMBER (MBER_ID,PASSWORD,PASSWORD_HINT,PASSWORD_CNSR,IHIDNUM,MBER_NM,ZIP,ADRES,AREA_NO,MBER_STTUS,DETAIL_ADRES,END_TELNO,MBTLNUM,GROUP_ID,MBER_FXNUM,MBER_EMAIL_ADRES,MIDDLE_TELNO,SBSCRB_DE,SEXDSTN_CODE,ESNTL_ID) values ('"+ userId +"','" + fpw + "','P01','전자정부표준프레임워크센터',null,'" + userName + "','100775','서울 중구 무교동 한국정보화진흥원','02','P','전자정부표준프레임워크센터','2059','1566-2059','GROUP_00000000000000','1566-2059','egovframesupport@gmail.com','1566',SYSDATE,'F','"+ ESNTL_ID +"');" );
+         
+//         일반사용자보안설정
+//         System.out.println("INSERT INTO COMTNEMPLYRSCRTYESTBS (SCRTY_DTRMN_TRGET_ID, MBER_TY_CODE, AUTHOR_CODE) VALUES ('"+ ESNTL_ID +"', 'USR01', 'ROLE_USER');");
+         
+//         업무사용자
+//         System.out.println("INSERT INTO COMTNEMPLYRINFO (EMPLYR_ID, ORGNZT_ID, USER_NM, PASSWORD, EMPL_NO, IHIDNUM, SEXDSTN_CODE, BRTHDY, FXNUM, HOUSE_ADRES, PASSWORD_HINT, PASSWORD_CNSR, HOUSE_END_TELNO, AREA_NO, DETAIL_ADRES, ZIP, OFFM_TELNO, MBTLNUM, EMAIL_ADRES, OFCPS_NM, HOUSE_MIDDLE_TELNO, GROUP_ID, PSTINST_CODE, EMPLYR_STTUS_CODE, ESNTL_ID, CRTFC_DN_VALUE, SBSCRB_DE)"
+//               + "    VALUES ('"+ userId +"','ORGNZT_0000000000000','"+userName+"', '"+ fpw +"','20112059',null,'M','20111130','1566-2059','서울 중구 무교동 한국정보화진흥원','P01','전자정부표준프레임워크센터','2059','02','전자정부표준프레임워크센터','100775','1566-2059','1566-2059','egovframesupport@gmail.com','관리자','1566','GROUP_00000000000000','00000001','P','"+ ESNTL_ID +"','',SYSDATE);");
+         
+//         업무사용자보안설정
+//         System.out.println("INSERT INTO COMTNEMPLYRSCRTYESTBS (SCRTY_DTRMN_TRGET_ID, MBER_TY_CODE, AUTHOR_CODE) VALUES ('"+ ESNTL_ID +"', 'USR03', 'ROLE_ADMIN');");
+         
+//         기업사용자
+//         System.out.println("INSERT INTO COMTNENTRPRSMBER (ENTRPRS_MBER_ID,ENTRPRS_SE_CODE,BIZRNO,JURIRNO,CMPNY_NM,CXFC,ZIP,ADRES,ENTRPRS_MIDDLE_TELNO,FXNUM,INDUTY_CODE,APPLCNT_NM,APPLCNT_IHIDNUM,SBSCRB_DE,ENTRPRS_MBER_STTUS,ENTRPRS_MBER_PASSWORD,ENTRPRS_MBER_PASSWORD_HINT,ENTRPRS_MBER_PASSWORD_CNSR,GROUP_ID,DETAIL_ADRES,ENTRPRS_END_TELNO,AREA_NO,APPLCNT_EMAIL_ADRES,ESNTL_ID) "
+//               + "values ('"+entId+"','C0000001','1008360001','1000310000011','" + entName + "','이가브','100775','서울특별시 중구 청계천로 14 - 0 한국정보사회진흥원','1566','1566-2059','O','관리자',null,SYSDATE,'P','" + fpw + "','P01','전자정부표준프레임워크센터','GROUP_00000000000000','표준프레임워크센터','2059','02','egovframesupport@gmail.com','"+ ESNTL_ID +"');");
+         
+         //기업사용자보안설정
+         System.out.println("INSERT INTO COMTNEMPLYRSCRTYESTBS (SCRTY_DTRMN_TRGET_ID, MBER_TY_CODE, AUTHOR_CODE) VALUES ('" + ESNTL_ID + "', 'USR02', 'ROLE_USER');");
+       }//for-i
+   }//main
+    
+   
+      
+   }//end class
+
+
+
+   // "User" + "번호" >> 아이디만들기
+   // "아이디" + 비밀번호 만들기 >> 최종비번만들기

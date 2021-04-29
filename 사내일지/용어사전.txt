@@ -12,11 +12,11 @@ web
 
 was
 
-WADL : 
+
 =========================================================================
-[WSDL(Web Services Description Language)
-- 웹 서비스가 제공하는 서비스에 대한 정보를 기술한 파일로 XML로 기술한다. 
-- 웹 서비스의 구체적 내용이 기술되어 있으며 서비스 제공 장소(Endpoint), 서비스 메시지 포맷, 프로토콜 정보 등을 포함한다.
+[[WADL(Web Application Description Language)]]
+
+
 
 명세정보
 
@@ -36,7 +36,7 @@ WADL :
 
 [[ROA]]
 
-[[JAXB(Java Architecture for XML Binding)]]
+****** JAXB(Java Architecture for XML Binding) ******
 
 - 자바 클래스를 XML로 표현하는 자바 API이다. 웹 서비스에서는 데이터 바인딩 역할을 수행
 
@@ -46,7 +46,9 @@ context-webservice.XML(?)
 
 axis의 xml파일 생성?
 
-[[SOAP(Simple Object Access Protocol)]]
+****** SOAP(Simple Object Access Protocol) ******
+
+- SOA를 따르는 웹 서비스 디자인 표준, WSDL을 이용하여 정의
 
 - HTTP, HTTPS, SMTP 등을 통해 XML 기반의 메시지를 컴퓨터 네트워크 상에서 교환하는 프로토콜
 
@@ -59,17 +61,25 @@ axis의 xml파일 생성?
 헤더: 선택사항으로 반복이나 보안 및 트랜잭션을 정보로 하는 메타정보를 가짐
 바디: 중요한 정보를 가지고 있다
 
-[[UDDI(Universal Description, Discovery and Integration)]]
+
+****** UDDI(Universal Description, Discovery and Integration) ******
 
 - 웹 서비스를 등록하고 검색하기 위한 "저장소"로, 웹 서비스를 공개적으로 접근, 검색이 가능하도록 공개된 레지스트리이다.
 
 
-[[웹 서비스(Web-Service)]] >> 자동차를 만들었는데 이름이 자동차다
+****** 웹 서비스(Web-Service)]] >> 자동차를 만들었는데 이름이 자동차다 ******
 
 - 네트워크 상에 분산되어 있는 정보를 추상적인 서비스 형태로 개방하여 표준화된 방식으로 공유하는 기술로써 SOA 개념을 실현하기 위한 대표적인 기술
 
+****** REST(Representational State Transfer) ******
+- ROA(Resource Oriented Architecture)를 따르는 웹서비스 디자인 표준
+- WWW와 같은 분산 하이퍼 미디어 시스템을 위한 SW Arch의 한 형식
+- REST 원리를 따르는 시스템은 종종 RESTful이란 용어로 지칭
 
-
+****** WSDL(Web Services Description Language) ******
+- 웹 서비스가 제공하는 서비스에 대한 정보를 기술한 파일로 XML로 기술한다. 
+- 웹 서비스의 구체적 내용이 기술되어 있으며 서비스 제공 장소(Endpoint), 서비스 메시지 포맷, 프로토콜 정보 등을 포함한다.
+- HTTP 기반 웹 APPLICATION(W)
 =========================================================================
 [[해 결 과 제]]CXF 라이브러리를 이용해서 RestAPI 만들기
 XML, JSON 둘다 되야한다 >> 사용자의 요청 타입 파라미터에 따라서 되게끔!

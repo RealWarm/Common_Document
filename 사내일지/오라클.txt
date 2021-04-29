@@ -160,3 +160,8 @@ GRANT connect, resource, dba to com;
 
 
 'dependencies.dependency.systemPath' for ojdbc:ojdbc:jar should not point at files within the project directory, ${basedir}/src/main/webapp/WEB-INF/lib/ojdbc8.jar will be unresolvable by dependent projects @ line 558, column 25
+
+
+
+
+
