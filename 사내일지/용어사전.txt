@@ -12,7 +12,13 @@ web
 
 was
 
+로드밸런서
 
+커맨드
+
+쉘
+
+터미널
 =========================================================================
 [[WADL(Web Application Description Language)]]
 
@@ -80,6 +86,11 @@ axis의 xml파일 생성?
 - 웹 서비스가 제공하는 서비스에 대한 정보를 기술한 파일로 XML로 기술한다. 
 - 웹 서비스의 구체적 내용이 기술되어 있으며 서비스 제공 장소(Endpoint), 서비스 메시지 포맷, 프로토콜 정보 등을 포함한다.
 - HTTP 기반 웹 APPLICATION(W)
+
+****** JAXB(Java Architecture for XML Binding) ******
+- XML Schema를 읽어서 자바 오브젝트로 만드는 언마샬링(Unmarshaling)과 반대로 자바 오브젝트를 XML로 변환하는 마샬링(Marshalling)을 가능하도록 하는 Java API를 말합니다.
+
+@XmlRootElement : 
 =========================================================================
 [[해 결 과 제]]CXF 라이브러리를 이용해서 RestAPI 만들기
 XML, JSON 둘다 되야한다 >> 사용자의 요청 타입 파라미터에 따라서 되게끔!

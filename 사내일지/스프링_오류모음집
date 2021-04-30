@@ -1,5 +1,0 @@
-ERROR: org.springframework.web.context.ContextLoader - Context initialization failed
-java.lang.NoClassDefFoundError: org/springframework/core/NativeDetector
-
-spring-context-support의 버전이 현 스프링 버전과 달라서 생긴 오류였습니다
-${org.springframework-version}로 설정해주고 문제 해결했습니다. 감사합니다.
