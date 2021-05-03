@@ -5,6 +5,19 @@ java.lang.NoClassDefFoundError: org/springframework/core/NativeDetector
 spring-context-support의 버전이 현 스프링 버전과 달라서 생긴 오류였습니다
 ${org.springframework-version}로 설정해주고 문제 해결했습니다. 감사합니다.
 ==========================================================================
+[oracle error] 해결: Socket read interrupted, Authentication lapse 0 ms.
+또는 [Eclipse Tomcat error] : server ports required by tomcat are already in use
+
+참고사이트
+1. https://drsggg.tistory.com/191
+
+현상
+1. JDBC를 통한 oracle 접속에서 timeout 문제가 발생함
+2. oracle sql developer를 통해 접속을 시도해 보았으나, 해당 계정에서 timeout이 발생함.
+
+문제 : 오라클 
+
+services.msc >> oracleXETNSListener를 다시시작하니깐 됬음
 ==========================================================================
 ==========================================================================
 ==========================================================================
