@@ -113,10 +113,11 @@ init-method >> anjwl?
 - db 설계하기
 
 ++++++++++++++ 오늘 이룬것 ++++++++++++++
--
 - 시큐리티 공부
 - 깃 인강 1개 & 문자열 인강
-
+- 액티브 스레드 계단 >> 하나의 선인지, 메뉴별로인지 알보자
+바이트 아님
+- jmeter 공부
 ========================================================================
 ==========================================================================
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -145,13 +146,3 @@ init-method >> anjwl?
 
 
 
-
-
-Description	Resource	Path	Location	Type
-No AuthenticationEntryPoint could be established. Please make sure you have a login mechanism configured through the namespace (such as form-login) or specify a custom AuthenticationEntryPoint with the 'entry-point-ref' attribute 	security-context.xml	/all_security/src/main/webapp/WEB-INF/spring	line 10	Spring Beans Problem
-액티브 스레드 계단 >> 하나의 선인지, 메뉴별로인지 알보자
-
-
-
-
-바이트 아님
