@@ -1,0 +1,216 @@
+*********** 정  의
+- 하나의 객체만을 생성해 이후에 호출된 곳에서 생성된 객체를 반환하여 프로그램 전반에서 하나의 인스턴스만을 사용하게 하는 패턴입니다
+
+*********** 특  징
+- 주로 공통된 객체를 여러개 생성해서 사용하는 DBCP(DataBase Connection Pool)와 같은 상황에서 많이 사용된다[core java(java.lang.Runtime, java.awt.Desktop 등등)에서도 사용이 된다]
+
+- 기본 생성자의 접근자를 private로 만든다
+	+ new 키워드를 사용할 수 없다
+	+ 조회 메소드("getInstance()")를 통해서 생성된 객체의 주소를 얻게된다.
+
+- 조회 메소드("getInstance()")의 접근자를 public static로 만든다
+=========================================================================
+[[[[[Singleton(싱글톤)의 고도화]]]]]
+
+public class EagerInitialization {
+ 
+    //private static으로 선언
+    private static EagerInitialization instance 
+   							= new EagerInitialization();
+     
+    //기본 생성자
+    private EagerInitialization() {}
+     
+    //조회 메소드 >> 인스턴스 리턴
+    public static EagerInitialization getInstance() {
+        return instance;
+    }//getInstance
+
+}//end class
+
+1. Eager initialization (이른 초기화 방식)
+- private static을 이용하여 전역변수로 instance를 만든다.
+- static이 붙은 클래스 변수는 인스턴스화에 상관없이 사용이 가능하다.
+- private 접근제어자로 인해 "클래스 이름.인스턴스 이름"로의 접근은 불가능하다.
+	>> 뭔말이지??
+
+장  점
+- static으로 생성된 변수에 싱글톤 객체를 선언했기 때문에 클래스 로더에 의해 클래스가 로딩 될 때 싱글톤 객체가 생성됩니다.
+
+- 클래스 로더에 의해 클래스가 최초 로딩 될 때 객체가 생성됨으로 Thread-safe합니다.
+  
+단  점
+- 싱글톤 객체 사용 유무와 관계없이 클래스가 로딩되는 시점에 항상 싱글톤 객체가 생성되고, 메모리를 잡고있기 때문에 비효율적일 수 있다.
+
+- 클래스가 인스턴스화 되는 시점에 어떠한 에러처리도 할 수 없다.
+=========================================================================
+public class StaticBlockInitalization {
+
+	private static StaticBlockInitalization instance;
+
+	private StaticBlockInitalization () {}
+	
+	static {
+		try {
+			System.out.println("instance create..");
+			instance = new StaticBlockInitalization();
+		} catch (Exception e) {
+			throw new RuntimeException("Exception creating StaticBlockInitalization instance.");
+		}//try-catch
+	}//static
+	
+	public static StaticBlockInitalization getInstance () {
+		return instance;
+	}//getInstance()
+
+}//end class
+
+
+1.5) static block initialization
+- static 초기화 블럭을 이용하면 클래스가 로딩 될 때 최초 한번 실행하게 된다. 
+- 초기화블럭을 이용하면 logic을 담을 수 있기 때문에 복잡한 초기변수 셋팅이나 위와 같이 에러처리를 위한 구문을 담을 수 있다.
+=========================================================================
+public class LazyInitialization {
+	
+	private static LazyInitialization instance;
+	private LazyInitialization () {}
+	
+	public static LazyInitialization getInstance () {
+		if ( instance == null )
+			instance = new LazyInitialization();
+		return instance;
+	}//getInstance
+
+}//end class
+
+2. Lazy initialization (늦은 초기화 방식)
+- 인스턴스가 사용되는 시점에 인스턴스를 만드는 singleton pattern
+- 객체의 생성이 조회메소드 안에 있다.
+
+장점
+- 싱글톤 객체가 필요할 때 인스턴스를 얻을 수 있습니다. Eager initialization 방식에 단점을 보완할 수 있습니다.(메모리 누수 방지)
+
+단점
+- 만약 multi-thread 환경에서 여러 곳에서 동시에 getInstance()를 호출할 경우 인스턴스가 두번 생성될 여지가 있습니다. 즉 multi-thread 환경에서는 싱글톤 철학이 깨질 수 있는 위험이 있습니다.
+=========================================================================
+public class ThreadSafeLazyInitialization{
+ 
+    private static ThreadSafeLazyInitialization instance;
+ 
+    private ThreadSafeLazyInitialization(){}
+     
+    public static synchronized ThreadSafeLazyInitialization getInstance(){
+        if(instance == null){
+            instance = new ThreadSafeLazyInitialization();
+        }//if
+        return instance;
+    }//ThreadSafeLazyInitializationgetInstance
+
+}//end class
+
+3. Thread safe Lazy initialization (스레드 안전한 늦은 초기화)
+- 위에서 문제가 되었던 muilit thread문제를 해결하기 위해 synchronized(동기화)를 사용하여 singleton pattern을 구현
+
+장점
+- 위에서 말했듯 Lazy initialization 방식에서 thread-safe하지 않은 점을 보완한다. 
+
+단점
+- synchronized 키워드를 사용할 경우 자바 내부적으로 해당 영역이나 메서드를 lock, unlock 처리하기 때문에 내부적으로 많은 cost가 발생한다. 따라서 많은 thread 들이 getInstance()를 호출하게 되면 프로그램 전반적인 성능저하가 발생한다.
+=========================================================================
+public class ThreadSafeLazyInitialization {
+ 
+    private static ThreadSafeLazyInitialization instance;
+ 
+    private ThreadSafeLazyInitialization(){}
+     
+    public static ThreadSafeLazyInitialization getInstance(){
+        //Double-checked locking
+        if(instance == null){
+            synchronized (ThreadSafeLazyInitialization.class) {
+                if(instance == null){
+                    instance = new ThreadSafeLazyInitialization();
+                }//if
+            }//synchronized
+        }//if
+        return instance;
+    }//getInstance
+
+}//end class
+
+
+3-1. Thread safe Lazy initialization + Double-checked locking 기법
+- 첫번째 if문에서 instance 가 null인 경우 synchronized 블럭에 접근하고 한번 더 if문으로 instance가 null 유무를 체크합니다. 
+- 2번 모두다 instance가 null인 경우에 new를 통해 인스턴스화 시킵니다. 그 후에 instance가 null이 아니기 때문에 synchronized 블럭을 타지 않습니다. 이런 Double-checked locking기법을 통해 성능저하를 보완할 수 있습니다.
+=========================================================================
+public class InitializationOnDemandHolderIdiom {
+ 
+    private InitializationOnDemandHolderIdiom(){}
+     
+    private static class SingleTonHolder{
+        private static final InitializationOnDemandHolderIdiom instance = new InitializationOnDemandHolderIdiom();
+    }//SingleTonHolder
+     
+    public static InitializationOnDemandHolderIdiom getInstance(){
+        return SingleTonHolder.instance;
+    }//getInstance
+
+}//end class
+
+4. Initialization on demand holder idiom (holder에 의한 초기화)
+- 클래스안에 클래스(Holder)를 두어 JVM의 Class Loader 매커니즘과 Class가 로드되는 시점을 이용한 방법입니다. Lazy initialization 방식을 가져가면서 Thread간 동기화문제를 동시에 해결할 수 있습니다. 
+
+- 중첩클래스 Holder는 getInstance 메서드가 호출되기 전에는 참조 되지 않으며, 최초로 getInstance() 메서드가 호출 될 때 클래스 로더에 의해 싱글톤 객체를 생성하여 리턴합니다. 우리가 알아둬야 할 것은 holder 안에 선언된 instance가 static이기 때문에 클래스 로딩 시점에 한번만 호출된다는 점을 이용한것이죠. 또 final을 써서 다시 값이 할당되지 않도록 합니다.
+
+- 현재까지 가장 많이 사용되는 방법으로 알려져있습니다. 그 만큼 검증됬다는 이야기같습니다.
+
+- lazy initialization이 가능하며 모든 java 버젼과, jvm에서 사용이 가능하다. 현재 java 에서 singleton 을 생성시킨다고 하면 거의 위의 방법을 사용한다고 보면 된다.
+
+=========================================================================
+public enum EnumInitialization {
+
+	INSTANCE;
+	static String test = "";
+
+	public static EnumInitialization getInstance() {
+		test = "test";
+		return INSTANCE;
+	}//getInstance
+
+}//end class
+
+5. Enum initialization (Enum 초기화)
+
+자바 1.5 버전부터 지원하는 enum이 singleton pattern 으로 사용될 수 있는 이유는 아래와 같다.
+- 모든 enum type들은 프로그램 내에서 한번 초기화되는 점을 이용해 싱글톤을 구현합니다.(단 한번의 인스턴스 생성을 보장한다.)
+- INSTANCE 가 생성될 때, multi thread 로 부터 안전하다. (추가된 methed 들은 safed 하지 않을 수도 있다.)
+- enum value는 자바 프로그램 전역에서 접근이 가능하다.
+=========================================================================
+public class UsingReflectionToDestroySingleton {
+	
+	public static void main (String[] args) {
+		EagerInitialization instance = EagerInitialization.getInstance();
+		EagerInitialization instance2 = null;
+		
+		try {
+			Constructor[] constructors = EagerInitialization.class.getDeclaredConstructors();
+			for ( Constructor constructor : constructors ) {
+				constructor.setAccessible(true);
+				instance2 = (EagerInitialization)constructor.newInstance();
+			}
+		} catch (Exception e) {
+			
+		}//try-catch		
+		System.out.println(instance.hashCode());
+		System.out.println(instance2.hashCode());		
+	}//main
+
+}//end class
+
+6. using reflection to destroy singleton
+
+- java의 reflection을 이용하여 singleton을 깨뜨려 보는법(누군가 작성한 코드를 원본 수정없이 작업해야 할때 이용될 수 있다)
+
+- 위의 코드를 실행해보면 아래 System.out.println();의 두 라인에서 찍히는 hachCode()값이 다른 것을 확인 할 수 있다
+
+- java의 reflection은 매우 강력하다. 설령 class 의 생성자가 private 일지라도 강제로 가져와서 새로운 인스턴스 생성이 가능하다. (singleton pattern을 깨뜨리는 것이 가능하다)
+=========================================================================
