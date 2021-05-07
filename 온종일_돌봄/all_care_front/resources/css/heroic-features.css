@@ -1,0 +1,102 @@
+/*!
+ * Start Bootstrap - Heroic Features (https://startbootstrap.com/template/heroic-features)
+ * Copyright 2013-2020 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-heroic-features/blob/master/LICENSE)
+ */
+/* Global */
+
+:root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #eeeeee;
+  --color-dark-white: #bdbdbd;
+  --color-pink: #fe918d;
+  --color-dark-pink: #ff6863;
+  --color-dark-grey: #4d4d4d;
+  --color-grey: #616161;
+  --color-light-grey: #7c7979;
+  --color-blue: #73aace;
+  --color-yellow: #fff7d1;
+  --color-orange: #feb546;
+  --color-black: #000000;
+  --color-red: #ff5058;
+
+  /* Font size */
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+  --weight-small:200;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+
+  /* Animation */
+  --animation-duration: 300ms;
+
+  /* box-width */
+  --box-inputw-wide  : 80%;
+  --box-inputw-midle : 50%;
+  --box-inputw-small : 20%;
+
+  --box-inputh-wide  : 1500px;
+  --box-inputh-midle : 100px;
+  --box-inputh-small : 50%;
+
+}
+
+body {
+  padding-top: 56px;
+}
+
+.container.center{
+  margin-bottom: 130px;
+}
+
+.a__pic{
+  padding: 0px;
+}
+
+.card-title1{
+  text-align: left;
+  /* padding-bottom: 10px; */
+  margin-bottom: 10px;
+  font-weight: var(--weight-semi-bold);
+}
+
+.card-body1{
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: left;
+}
+
+.price_address{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* padding-left: 10px;
+  padding-right: 10px; */
+}
+
+.card-text1{
+  font-size: var(--font-small);
+  font-weight: var(--weight-bold);
+}
+
+.card-text2{
+  font-size: var(--font-small);  
+  font-weight: var(--weight-semi-bold);
+}
+
+.card-img-top.ffix{
+  height: 220px;
+  /* height: 100%; */
+}

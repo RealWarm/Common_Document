@@ -1,0 +1,43 @@
+.main-agree-wrap {
+    margin: 0 auto;
+    width:800px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.agree_title_main{
+    font-size: 15px;
+    text-align: left;
+}
+.agree-title{
+    font-size: 30px;
+}
+.agree_check_all{
+    margin-top: 5px;
+    margin-bottom: 0%
+}
+
+.agreement {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.agreement-box{
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.agreement-text{
+    /* overflow: hidden; */
+    overflow-y: scroll;
+    height: 157px;
+    padding: 15px;
+    border: 1px solid #e8e7e7;
+}
+
+.agree_check_all{
+   text-align: left;
+   margin-bottom: 10px;
+}
+

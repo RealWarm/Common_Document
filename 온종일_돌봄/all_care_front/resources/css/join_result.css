@@ -1,0 +1,41 @@
+.join_result_wrap{
+    padding: 50px;
+    width:800px;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: auto;
+    border: thick double #cccccc;
+    
+}
+
+.join_result_main{
+    font-size: 50px;
+    font-style: inherit;
+    text-align: center;
+}
+
+.join_result_sub{
+    font-size: 25px;
+    text-align: center;
+    
+}
+
+.welcom_msg{
+    text-align: center;
+    width: auto;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+.join-button-wrap{
+    margin-bottom: 100px;
+
+}
+
+.join_result img{
+    width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}

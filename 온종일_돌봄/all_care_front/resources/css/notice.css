@@ -1,0 +1,71 @@
+/* /공통/ */
+.notice_cinema{
+   width: 800px;
+   margin: 0 auto;
+   margin-top: 60px;
+   margin-bottom: 60px; 
+   font-size:12px;
+}
+
+.board-notice-title{
+  border-bottom: 2px solid #666;
+   margin-bottom: 50px;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.6px;
+  padding-bottom: 15px;
+  
+}
+
+.notice-table{
+   table-layout: fixed;
+   margin: auto;
+   width: 800px;
+   height: 350px;
+   border-collapse:collapse;
+}
+
+.trnotice {
+   border:1px solid rgb(172, 158, 158);
+   border-collapse:collapse;
+   padding:5px;
+}
+
+.tdTitle{
+   white-space:nowrap; 
+   text-overflow:ellipsis;
+   overflow:hidden;
+}
+
+/* /헤드부 / */
+
+.thead-notice th { 
+   height: 35px;
+   background-color:rgb(46, 45, 45) ;
+   color: white; 
+}
+
+/* /tbody/ */
+
+.tdNo, .tdDate  {text-align:center;}
+
+.notice-detail a { 
+   color:#333;
+}
+
+.notice-detail a:link { 
+   font-size:15px;
+   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   text-decoration:none;
+}
+.notice_bottom {
+   text-align:center;
+   color:rgb(45, 46, 48);
+   padding: 15px;
+   font-size:10pt;
+   font-family:굴림;
+   text-decoration:none;
+
+}
+
+

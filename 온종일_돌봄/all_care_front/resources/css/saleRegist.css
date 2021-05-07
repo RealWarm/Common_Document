@@ -1,0 +1,220 @@
+/* Global */
+
+:root {
+    /* Color */
+    --color-white: #ffffff;
+    --color-light-white: #eeeeee;
+    --color-dark-white: #bdbdbd;
+    --color-pink: #fe918d;
+    --color-dark-pink: #ff6863;
+    --color-dark-grey: #4d4d4d;
+    --color-grey: #616161;
+    --color-light-grey: #7c7979;
+    --color-blue: #73aace;
+    --color-yellow: #fff7d1;
+    --color-orange: #feb546;
+    --color-black: #000000;
+    --color-red: #ff5058;
+
+    /* Font size */
+    --font-large: 48px;
+    --font-medium: 28px;
+    --font-regular: 18px;
+    --font-small: 16px;
+    --font-micro: 14px;
+
+    /* Font weight */
+    --weight-bold: 700;
+    --weight-semi-bold: 600;
+    --weight-regular: 400;
+
+    /* Size */
+    --size-border-radius: 4px;
+
+
+    /* Animation */
+    --animation-duration: 300ms;
+
+    /* box-width */
+    --box-inputw-wide  : 80%;
+    --box-inputw-midle : 50%;
+    --box-inputw-small : 20%;
+
+    --box-inputh-wide  : 1500px;
+    --box-inputh-midle : 100px;
+    --box-inputh-small : 50%;
+
+}
+
+/* Universal */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    padding: 60px;
+    margin: 0;
+    cursor: default;
+    margin-bottom: 500px;
+    /* 텍스트 커서가 기본 커서로 바뀐다. */
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-white);
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info__container{
+    position: relative;    
+    margin: auto;
+    width: 1000px;
+}
+
+/* Typhography */
+.tag__name{
+    margin: 0px;
+    position: relative;    
+    box-sizing : border-box;
+    top: 5px;
+    text-align: center;    
+}
+
+.tag__star{
+    margin-top: 30px;
+    color: var(--color-red);
+    font-weight: var(--weight-semi-bold);
+}
+
+
+
+/* Top Title */
+.tag__name__top{
+    display: flex;    
+}
+
+#main__name{
+    font-size: var(--font-medium);
+}
+
+.tag__star__main{
+    margin-top: 30px;
+    color: var(--color-red);
+    font-weight: var(--weight-semi-bold);
+    margin-left: 15px;
+}
+.main__hr{
+    height: 2px;
+    background-color: var(--color-black);
+}
+
+/* Product Image */
+.tag__name{
+    font-weight: var(--weight-semi-bold);    
+    width: 110px;
+    margin-left: 30px;
+    margin-top:30px;
+}
+
+.tag__star{
+    margin-left: 5px;
+}
+.upload__box{
+    margin:30px;
+}
+.image__upload{
+    display: flex;
+}
+
+.btn__upload{
+    opacity: 1;
+}
+
+/* Title */
+.title{
+    /* margin: 0px; */
+    display: flex;    
+}
+
+.title_input{
+    width: var(--box-inputw-wide);
+    height: 50px;
+}
+
+/* details */
+.details{
+    display: flex;
+}
+
+.details>.tag__name>.tag__star{
+    display: none;
+}
+
+#tag__details{
+    
+}
+
+/* price */
+.price{
+    display: flex;
+    height: 20px;
+}
+
+#price{
+    width: var(--box-input-wsmall);
+    /* height: 40px; */
+}
+
+/* quantity */
+.quantity{
+    display: flex;
+}
+
+#quantity{
+    width: var(--box-input-wsmall);
+    height: 40px;
+}
+
+/* Address */
+.address{
+    display: flex;
+}
+
+.address__detail{
+    width: var(--box-input-wsmall);
+}
+
+/* trade__type */
+.trade__type{
+    display: flex;
+}
+
+/* Trade_Type */
+.trade__type{
+    display: flex;
+}
+
+.how{
+}
+
+
+/* submit__btn */
+.sale__regist__btn{
+    margin-top: 100px;   
+     /* div 안에 버튼의 위치를 오른쪽으로  */
+    float: rigth;
+}
+
+
+
+
+
+
+
+/* 태그이름들 가운데 수직 정렬 */
+/* 박스들 수직정렬 */

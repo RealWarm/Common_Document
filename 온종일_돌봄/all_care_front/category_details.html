@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Shop Homepage - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="resources/css/shop-homepage.css" rel="stylesheet">
+  <!-- Bootstrap core JavaScript -->
+  <script src="resources/vendor/jquery/jquery.min.js"></script>
+  <script src="resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Start Bootstrap</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+
+      <!-- left Side Bar -->
+      <div class="col-lg-3">
+        <h1 class="my-4">Category</h1>
+        <div class="list-group">
+          <a href="/category/greate?ct_num=100" class="list-group-item">의류</a>
+          <a href="/category/greate?ct_num=200" class="list-group-item">가전제품</a>
+          <a href="/category/greate?ct_num=300" class="list-group-item">도서/문구</a>
+          <a href="/category/greate?ct_num=400" class="list-group-item">생활가구</a>
+          <a href="/category/greate?ct_num=500" class="list-group-item">차량/오토바이</a>
+          <a href="/category/greate?ct_num=2200" class="list-group-item">기타/특수</a>
+        </div>
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <!-- center body -->
+      <div class="col-lg-9 ct_body">
+
+        <div class="detail__header">
+          <h2> ${CData.ct_main} 카테고리 페이지</h2>
+          <hr>
+        </div>
+
+        <div class="row">
+
+          <!-- <c:forEach items="${list1}" var="list" begin="0" end="10"> -->
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="/sale/detail?num=${list.sb_num}" class="a__pic"><img class="card-img-top two"
+                  src="/resources/img/500x325/apple_pen1.png" alt="${list.sb_view}"></a>
+              <div class="card-body1">
+                <h7 class="card-title1">${list.sb_name}</h7>
+                <hr>
+                <div class="price_address">
+                  <!-- <h5 class="card-text1">${list.total_price} 원</h5>
+		              <h5 class="card-text2">${list.trade_area}</h5> -->
+                  <h5 class="card-text1">11111 원</h5>
+                  <h5 class="card-text2">신림동</h5>
+                </div>
+              </div>
+            </div><!-- card h-100 -->
+          </div>
+          <!-- </c:forEach> -->
+
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="/sale/detail?num=${list.sb_num}" class="a__pic"><img class="card-img-top two"
+                  src="/resources/img/main_banner1_1200x350.JPG" alt="${list.sb_view}"></a>
+              <div class="card-body1">
+                <h7 class="card-title1">${list.sb_name}</h7>
+                <hr>
+                <div class="price_address">
+                  <h5 class="card-text1">${list.total_price} 원</h5>
+                  <h5 class="card-text2">${list.trade_area}</h5>
+                </div>
+              </div>
+            </div><!-- card h-100 -->
+          </div>
+
+
+
+
+        </div>
+        <!-- /.row -->
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+  <section>
+    <div id="data-container"></div>
+    <div id="pagination"></div>
+</section>
+  <div class="text-center">
+    <!--  <td colspan="5" class="tdFoot">  -->
+    <c:if test="${pageMaker.prev}">
+      <a href="${path}/board/listAll?page=${pageMaker.startPage-1}&laquo;">
+        <</a> </c:if> <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+          <%-- 	<c:out value="${pageMaker.cri.page==idx?'class=active':''}"/> --%>
+          <a href="${path}/board/listAll?page=${idx}">${idx}</a>
+          </c:forEach>
+          <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+            <a href="${path}/board/listAll?page=${pageMaker.endPage+1}">&raquo;</a>
+    </c:if>
+          <!--   </td> -->
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="col-lg-4 col-md-6 mb-4">
+  <div class="card h-100">
+    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+    <div class="card-body">
+      <h4 class="card-title">
+        <a href="#">Item One</a>
+      </h4>
+      <h5>$24.99</h5>
+      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+    </div>
+  </div>
+</div> -->

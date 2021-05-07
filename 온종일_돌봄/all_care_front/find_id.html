@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="/resources/css/reset.css">
+    <link rel="stylesheet" href="/resources/css/find_id.css">
+</head>
+<body>
+    <div class="main-findid-wrap">
+        <div class="findid-title-main">
+            <p class="findid_title">아이디 찾기</p>
+        </div>
+        <div class="find_id_input_wrap">
+            <form action="/find/find_id" method="POST">
+                <div class="find-form">                    
+                    <input type="text" placeholder="이름" id="insertId" name="name"> <br>                    
+                    <input type="email" placeholder="메일을 입력해주세요." 
+                            id="insertEmail" name="email">
+                </div>
+                <div class="find-btn">
+                    <input type="submit" class="find-btn" value="확인">
+                </div>
+            </form>
+        </div>
+        <div id="findLoginpw" class="find_another">
+            혹시 비밀번호를 찾으시나요? <a href="" class="link_find">비밀번호 찾기</a>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+
+        var nameReg = /^[가-힣]+$/;
+        var emailReg = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+        $(".find-btn").on('click', function (event) {
+            
+            // 이름이 빈칸이면 경고
+            if($("#insertId").val()==""){
+                alert("이름을 입력해주세요.");
+                $("#insertId").focus();
+                $("#insertId").val("");
+                return false;
+            }//if
+
+            // 이름이 형식에 맞지않으면 경고 >> reset
+            if(!nameReg.test($("#insertId").val())){
+                alert("이름의 형식에 맞게 입력해주세요");
+                $("#insertId").focus();
+                $("#insertId").val("");
+                return false;
+            }//if
+
+            // 이메일이 빈칸이라면 경고            
+            if($("#insertEmail").val()==""){
+                alert("이메일을 입력해주세요.");
+                $("#insertEmail").focus();
+                $("#insertEmail").val("");
+                return false;
+            }//if
+
+            // 이메일이 형식에 맞지않으면 경고
+            if(!emailReg.test($("#insertEmail").val())){
+                alert("이메일 형식에 맞게 입력해주세요.");
+                $("#insertEmail").focus();
+                $("#insertEmail").val("");
+                return false;
+            }//if
+
+
+
+        }); //submit
+
+    });//document
+
+</script>
+
+
+</html>
