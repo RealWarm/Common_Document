@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>나라중고장터</title>
+    <link rel="stylesheet" href="/resources/css/style1.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+        integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ=="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="main-join-wrap">
+        <form class="join-form" action="/member/register" method="POST">
+            <div class="join-title-main">
+                <h2 class="join-title">회원가입</h2>
+            </div>
+            <!-- 입력양식 -->
+            <div class="join-insert-wrap">
+                <table class="join-table">
+                    <colgroup>
+                        <col style="width:20%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                <label for="id">*아이디</label>
+                            </th>
+                            <td>
+                                <input type="text" title="아이디" id="id" name="id" maxlength="12">
+                                <span class="error-message" id="idMessage" role="alert" style="display:none"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="password">*비밀번호</label></th>
+                            <td>
+                                <input type="password" title="비밀번호" id="password" name="password">
+                                <span class="error-message" id="pwMessage" role="alert" style="display:none"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="passwordCheck">*비밀번호 확인</label></th>
+                            <td>
+                                <input type="password" title="비밀번호 확인" id="passwordCheck" name="user-check-pw">
+                                <span class="error-message" id="pwCheckMessage" role="alert"
+                                    style="display:none"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="name">*이름</label></th>
+                            <td>
+                                <input type="text" title="이름" id="name" name="name">
+                                <span class="error-message" id="nameMessage" role="alert" style="display:none"></span>
+                            </td>
+                        </tr>
+                        <!-- 닉네임 -->
+                        <tr>
+                            <th><label for="nickname">*닉네임</label></th>
+                            <td>
+                                <input type="text" title="닉네임" id="nickname" name="nickname">
+                                <span class="error-message" id="nicknameMessage" role="alert"
+                                    style="display:none"></span>
+                            </td>
+                        </tr>
+                        <!-- 기관명 -->
+                        <tr>
+                            <th><label for="org_name">*기관명</label></th>
+                            <td>
+                                <input type="text" title="닉네임" id="org_name" name="org_name">
+                                <span class="error-message" id="org_nameMessage" role="alert"
+                                    style="display:none"></span>
+                            </td>
+                        </tr>
+                        <!-- 핸드폰 번호 -->
+                        <tr>
+                            <th><label for="phnum">*휴대폰</label></th>
+                            <td>
+                                <input type="text" title="닉네임" id="phnum" name="phnum">
+                                <span class="error-message" id="phnumMessage" role="alert" style="display:none"></span>
+                            </td>
+                        </tr>
+                        <!-- 이메일 -->
+                        <tr>
+                            <th scope="row"><label for="email">*이메일</label></th>
+                            <td>
+                                <input type="email" id="email" name="email">
+                                <!-- <input type="button" value="인증" id="emailAuthentiCation"> -->
+                                <span class="error-message" id="emailMessage" role="alert" style="display:none"></span>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <th scope="row"><label for="number">*인증번호</label></th>
+                            <td>
+                                <input type="text" id="CertiFicationNumber">
+                                <input type="button" id="CertiFicationConfirm" value="확인">
+                                <span class="error-message" id="CertiFicationMessage" role="alert"
+                                    style="display:none"></span>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div> <!-- 입력양식 -->
+            <div class="join-button-wrap">
+                <button type="submit" class="join-button join-submit">회원가입</button>
+                <input type="reset" value="취소" class="join-button">
+            </div>
+        </form>
+    </div>
+
+</body>
+<script>
+    $(document).ready(function () {
+
+        var idReg = /^[a-zA-Z0-9]{6,10}$/;
+        var pwReg = /^[a-zA-Z0-9]{6,10}$/;
+        var nameReg = /^[가-힣]+$/;
+        var orgReg = /^[가-힣\s]+$/; //한글+공백   
+        var nicknameReg = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/;
+        var emailReg = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+        var phnumReg = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+
+        $('.join-submit').on('click', function (event) {
+            // event.preventDefault();
+
+            // //아아디
+            // if ($("#id").val() == "") {
+            //   alert("아이디를 입력해주세요!!");
+            //   $("#id").focus();
+            //   return false;
+            // }
+
+            //아이디 테스트
+            if (!idReg.test($("#id").val())) {
+                alert("아이디를 다시 입력해주세요!!");
+                $("#id").focus();
+                return false;
+            }
+
+            //비밀번호
+            if (!pwReg.test($("#password").val())) {
+                alert("비밀번호를 입력해주세요!!");
+                $("#password").focus();
+                return false;
+            }
+            //비밀번호 확인
+            if ($("#password").val() !== $("#passwordCheck").val()) {
+                alert("비밀번호 확인을 다시 입력해주세요!!!");
+                $("#passwordCheck").focus();
+                return false;
+            }
+            // 아이디랑 비밀번호랑 같은지
+            if ($("#id").val() == ($("#password").val())) {
+                $("#password").focus();
+                return false;
+            }
+            //이름
+            if (!nameReg.test($("#name").val())) {
+                alert("이름을 다시 입력해주세요!!");
+                $("#name").focus();
+                return false;
+            }
+
+            // 닉네임
+            if (!nicknameReg.test($("#nickname").val())) {
+                alert("닉네임을 다시 입력해주세요!!");
+                return false;
+            }
+
+            //기관명
+            if ($("#org_name").val() == "") {
+                alert("기관명을 입력해주세요!!");
+                $("#org_name").focus();
+                return false;
+            }
+
+            // 휴대폰 번호
+            if (!phnumReg.test($("#phnum").val())) {
+                alert("휴대폰 번호를 입력해주세요!!");
+                $("#phnum").focus();
+                return false;
+            }
+
+            //이메일
+            if (!emailReg.test($("#email").val())) {
+                alert("이메일을 다시 입력해주세요!!");
+                $("#email").focus()
+                return false;
+            }
+        }); //submit
+
+        //======================================================================================================================//
+
+        $('#id').on('blur', function (event) {
+            var user_id = $('#id').val();
+            console.log("user_id:", user_id);
+            if (user_id == "") {
+                $("#idMessage").show();
+                $("#idMessage").text("아이디를 입력해주세요.");
+                return false;
+            }
+            $.ajax({
+                url: '/member/idcheck',
+                type: 'post',
+                data: {
+                    id: user_id
+                },
+                dataType: 'json',
+                success: function (userId) {
+                    console.log("userId:", userId);
+                    console.log("user_id:", user_id);
+                    if (userId == 1) {
+                        $("#idMessage").show();
+                        $("#idMessage").text("이미 가입된 아이디입니다.");
+                        $("#id").val("");
+                        return false;
+                    } else if (!idReg.test(user_id)) {
+                        $("#idMessage").show();
+                        $("#idMessage").text("아이디는 숫자 문자 포함 6~10자로 입력해주세요.");
+                        return false;
+                    } else {
+                        $("#idMessage").hide();
+                        return false;
+                    }
+                }, //end-success
+                error: function () {
+                    console.log("실패");
+                } //end-error
+            }); //ajax
+        });
+
+        $('#nickname').on('blur', function (event) {
+            var user_nick = $("#nickname").val();
+            console.log("user_nick : ", user_nick);
+            if (user_nick == "") {
+                $("#nicknameMessage").show();
+                $("#nicknameMessage").text("닉네임을 입력해주세요.");
+                return false;
+            }
+            $.ajax({
+                url: '/member/nickcheck',
+                type: 'post',
+                data: {
+                    nickname: user_nick
+                },
+                dataType: 'json',
+                success: function (nick) {
+                    console.log("nick cnt ::: ", nick);
+                    if (nick == 1) {
+                        $("#nicknameMessage").show();
+                        $("#nicknameMessage").text("이미 가입된 별명입니다.");
+                        $("#nickname").val("");
+                        return false;
+                    } else if (!nicknameReg.test(user_nick)) {
+                        $("#nicknameMessage").show();
+                        $("#nicknameMessage").text("별명은 한글 영어 숫자로 이루어진 5~10글자로 입력해주세요.");
+                        return false;
+                    } else {
+                        $("#nicknameMessage").hide();
+                        return false;
+                    }
+                }, //end-success
+                error: function () {
+                    console.log("닉네임에서 에러발생")
+                } //end-error
+            }); //ajax
+        }); //nick
+
+        $("#org_name").on("blur", function (event) {
+            if ($("#org_name").val() === "") {
+                $("#org_nameMessage").show();
+                $("#org_nameMessage").text("기관명을 입력해주세요.");
+                return false;
+            } else if (!orgReg.test($("#org_name").val())) {
+                $("#org_nameMessage").show();
+                $("#org_nameMessage").text("빈칸을 포함한 한글을 입력해주세요.");
+                return false;
+            } else {
+                $("#org_nameMessage").hide();
+                return false;
+            }
+        });
+
+        $('#password').on('blur', function (event) {
+            if ($('#password').val() === "") {
+                $("#pwMessage").show();
+                $("#pwMessage").text("비밀번호를 입력해주세요.");
+                return false;
+            } else if (!pwReg.test($("#password").val())) {
+                $("#pwMessage").show();
+                $("#pwMessage").text("비밀번호는 숫자 문자 포함 6~10자로 입력해주세요.");
+                return false;
+            } else if ($("#id").val() == ($("#password").val())) {
+                $("#pwMessage").show();
+                $("#password").val("");
+                $("#pwMessage").text("비밀번호가 아이디랑 같습니다.");
+                return false;
+            } else {
+                $("#pwMessage").hide();
+                return false;
+            }
+        });
+
+        $('#passwordCheck').on('blur', function (event) {
+            if ($('#passwordCheck').val() == "") {
+                $("#pwCheckMessage").show();
+                $("#pwCheckMessage").text("비밀번호 확인을 입력해주세요.");
+                return false;
+            } else if ($("#password").val() !== $("#passwordCheck").val()) {
+                $("#passwordCheck").val("");
+                $("#pwCheckMessage").show();
+                $("#pwCheckMessage").text("비밀번호랑 비밀번호 확인이 다릅니다.");
+                return false;
+            } else {
+                $("#pwCheckMessage").hide();
+                return false;
+            }
+        });
+
+        $('#name').on('blur', function (event) {
+            if ($('#name').val() == "") {
+                $("#nameMessage").show();
+                $("#nameMessage").text("이름을 입력해주세요.");
+                return false;
+            } else if (!nameReg.test($("#name").val())) {
+                $("#nameMessage").show();
+                $("#nameMessage").text("이름이 형식에 맞지 않습니다.");
+                return false;
+            } else {
+                $("#nameMessage").hide();
+                return false;
+            }
+        });
+
+        $('#phnum').on('blur', function (event) {
+            if ($('#phnum').val() == "") {
+                $("#phnumMessage").show();
+                $("#phnumMessage").text("휴대폰 번호를 입력해주세요.");
+                return false;
+            } else if (!phnumReg.test($("#phnum").val())) {
+                $("#phnumMessage").show();
+                $("#phnumMessage").text("휴대폰 번호 형식에 맞지 않습니다.");
+                return false;
+            } else {
+                $("#phnumMessage").hide();
+                return false;
+            }
+        });
+
+        
+    });
+</script>
+
+</html>
