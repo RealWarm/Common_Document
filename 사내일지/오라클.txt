@@ -46,13 +46,12 @@ SELECT * FROM ALL_USERS;
 connect hr/hr
 connect sys/manager as sysdba
 alter user hr identified by hr account unlock;
-connect hr/hr
 select tname from tab;
 
 create USER
-	com
+  com
 IDENTIFIED BY
-    com
+  com
 DEFAULT TABLESPACE USERS
 TEMPORARY TABLESPACE TEMP;
 
@@ -66,6 +65,7 @@ DEFAULT TABLESPACE USERS
 TEMPORARY TABLESPACE TEMP;
 
 GRANT CONNECT, DBA TO com;
+GRANT CONNECT, DBA TO all_care;
 
 SELECT
     dbms_xdb.gethttpport() 
@@ -163,5 +163,355 @@ GRANT connect, resource, dba to com;
 
 
 
+
+
+PK 생성
+ALTER TABLE [테이블명] ADD CONSTRAINT [PK명] PRIMARY KEY ([컬럼명,컬럼명..])
+
+=========================================================================
+=========================================================================
+drop table tbl_member;
+drop table tbl_child;
+
+create table tbl_member(
+    mem_id varchar2(50) primary key,         /* 아이디 */
+    mem_password varchar2(150) not null,     /* 비밀번호 */
+    mem_type varchar2(50) not null,          /* 회원유형 */
+    mem_name varchar2(20) not null,          /* 회원 이름 */
+    mem_email varchar2(50) not null,         /* 이메일 */
+    mem_phnum varchar2(50) not null,         /* 전화번호 */
+    mem_address varchar2(150),               /* 주소 */
+    mem_regdate date default sysdate,    /* 회원 가입일 */
+    mem_updatedate date DEFAULT NULL     /* 정보수정일 */ 
+);
+
+-- alter table tbl_member add constraint pk_memid primary key(memid);
+-- desc tbl_member;
+
+create table tbl_child(
+    ch_id varchar2(150) not null,           /* 자식 고유번호 */
+    ch_pt_id varchar2(50) not null UNIQUE,         /* 부모의 아이디(FK) */
+    ch_name varchar2(20) not null,          /* 자녀 이름 */
+    ch_sex varchar2(20) not null,           /* 자녀 성별 */
+    ch_detail varchar2(1000) not null,      /* 자녀 정보 */
+    ch_regdate date default sysdate,    /* 자녀등록일 */
+    ch_updatedate date default NULL,    /* 정보수정일 */
+    CONSTRAINTS FK_ID FOREIGN KEY(ch_pt_id)
+    REFERENCES tbl_member(mem_id)
+);
+
+alter table tbl_child add constraint pk_ch_id primary key(ch_id);
+desc tbl_child;
+=========================================================================
+=========================================================================
+=========================================================================
+
+
+drop table tbl_view;
+drop table tbl_sboard;
+drop table tbl_member;
+drop table tbl_category;
+drop table tbl_reply;
+drop table tbl_bookMark;
+show tables;
+    
+create table tbl_member(
+    id varchar(50) not null unique,  
+    password varchar(150) not null,
+    name varchar(20) not null,
+    nickname varchar(20) not null unique,
+    -- email varchar(50) not null unique,
+    email varchar(50) not null,
+    -- phnum varchar(50) not null unique,
+    phnum varchar(50) not null,
+    org_name varchar(50),             /* 소속기관 이름 */ 
+    recent_address varchar(150),          /* 최근 배송지 */    
+    regdate timestamp default now(),        /* 회원 가입일 */
+    updatedate timestamp DEFAULT NULL,        /* 정보수정일 */
+    primary key(id)
+)DEFAULT CHARSET=utf8;
+select * from tbl_member;
+
+insert into tbl_member 
+(id, password, name, nickname, email, phnum, org_name, recent_address)
+value
+("start", "start", "startname", "startnick", "start@naver.com", "010-9999-999", "start" , "start");
+
+delete from tbl_member
+where id="start" and password="b2938805d70faeffb2446698ebabc6c1c33e06a90d966e815ab58b72716eb3cb" and name="startname";
+
+
+update tbl_member
+set email="wjdgns8946@naver.com"
+where id="real123";
+
+select
+  id
+from
+  tbl_member
+where
+  name="정훈" AND
+    email="wjd@naver.com";
+    
+select
+  password
+from
+  tbl_member
+where
+  id="real123" AND
+    email="wjd@naver.com";
+    -- b2938805d70faeffb2446698ebabc6c1c33e06a90d966e815ab58b72716eb3cb
+    
+update tbl_member
+set
+password="b2938805d70faeffb2446698ebabc6c1c33e06a90d966e815ab58b72716eb3cb"
+WHERE id= "real123" AND email="wjd@naver.com";
+
+create table tbl_view(          /* 게시글에 올라가는 사진 */
+    sb_num int(50) not null,      /* 게시글 번호 */
+    view_name varchar(50) not null,   /* 사진이름 */    
+    primary key(sb_num, view_name)    
+)DEFAULT CHARSET=utf8;
+select * from tbl_view;
+
+
+create table tbl_category(
+    ct_num int(50) not null,      /* 카테고리번호 */
+    ct_main varchar(50) not null,   /* 대 분 류 */
+    ct_middle varchar(50),        /* 중 분 류 */
+  ct_sub varchar(50),         /* 소 분 류 */
+    primary key(ct_num)    
+)DEFAULT CHARSET=utf8;
+select * from tbl_category;
+
+
+create table tbl_sboard(
+    sb_num int(50) not null auto_increment,   /* 게시글 번호를 정수로 */
+    sb_writer varchar(50) not null,       /* 작성자의 아이디(FK) */
+    sb_nickname varchar(20) not null,     /* 작성자의 닉네임 +++++추가+++ */
+    sb_name varchar(50) not null,         /* 게시글의 제목 */
+    sb_detail varchar(2000),          /* 판매상품의 설명 */
+    Total_price int(50) not null,       /* 총 판매 금액 */ 
+    Total_quantity int(50) not null,      /* 총 판매수량 */
+  sb_regdate timestamp default now(),     /* 게시글 등록일 */
+    ct_num int(50) not null,          /* 카테고리 번호(FK) */
+    trade_shape varchar(50) not null,     /* 거래 형태 */
+    trade_progress varchar(50) default "판매중", /* 거래 진행 상황 */  
+    sb_view varchar(50) not null,       /* 대표사진이름 */
+    trade_area varchar(150) not null,     /* 거래지역 */
+    primary key(sb_num),
+    foreign key(sb_writer) references tbl_member(id)
+  ON DELETE CASCADE ON UPDATE CASCADE,
+    foreign key(ct_num) references tbl_category(ct_num)
+  ON DELETE CASCADE ON UPDATE CASCADE
+-- foreign key(sb_num) references tbl_reply(sb_num)
+--  ON DELETE CASCADE ON UPDATE CASCADE   
+)DEFAULT CHARSET=utf8;
+select  * from  tbl_sboard;
+
+
+SELECT
+  *
+FROM
+  tbl_sboard
+WHERE
+  sb_num > 0 AND
+  ct_num=100 AND
+  (trade_progress = "판매중" OR trade_progress="예약중")
+ORDER BY
+  sb_regdate DESC
+LIMIT
+  2, 10;
+    
+select
+  count(*)
+from
+  tbl_sboard
+where
+  ct_num=100 AND
+  (trade_progress = "판매중" OR trade_progress="예약중");
+
+
+create table tbl_reply(
+  rp_num int(50) not null auto_increment,   /* 댓글 인조키 */
+    sb_num int(50) not null,          /* 게시글 번호를 정수로 */
+    sb_writer varchar(50) not null,       /* 작성자의 아이디(FK) */
+    sb_nickname varchar(20) not null,     /* 작성자의 닉네임 */
+    sb_detail varchar(2000) not null,       /* 판매상품의 설명 */
+    rp_regdate timestamp default now(),     /* 댓글 등록일 */
+    primary key(rp_num)
+)DEFAULT CHARSET=utf8;
+
+
+create table tbl_bookMark(
+  sb_num int(50) not null,          /* 게시글 번호를 정수로 */
+    sb_writer varchar(50) not null,       /* 작성자의 아이디(FK) */
+    bm_regdate timestamp default now(),     /* 찜한날짜 */
+    primary key(sb_num, sb_writer),
+    foreign key(sb_writer) references tbl_member(id)
+  ON DELETE CASCADE ON UPDATE CASCADE
+)DEFAULT CHARSET=utf8;
+select * from tbl_bookmark;
+
+
+/*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  */
+/*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  *//*  */
+drop table tbl_view;
+drop table tbl_sboard;
+drop table tbl_member;
+drop table tbl_category;
+drop table tbl_reply;
+show tables;
+
+/* tbl_member */ 
+delete from tbl_bookMark
+where sb_num=1 and sb_writer="real123";
+
+select * from tbl_member;
+insert into tbl_member 
+(id, password, name, nickname, email, phnum, org_name, recent_address)
+value
+("start", "start", "startname", "startnick", "start@naver.com", "010-9999-999", "start" , "start");
+
+insert into tbl_member 
+(id, password, name, nickname, email, phnum, org_code, recent_address)
+value
+("testid1", "test", "testname", "testnick", "test@naver.com", "010-9999-999", 1 , "관악구신림동");
+
+insert into tbl_member 
+(id, password, name, nickname, email, phnum, org_code, recent_address)
+value
+("testid2", "test", "testname2", "testnick2", "test2@naver.com", "010-9999-9299", 1 , "관악구신림동");
+
+
+/* table tbl_category */
+select * from tbl_category;
+insert into tbl_category
+(ct_num, ct_main, ct_middle, ct_sub)
+value (100, "의류", "의류", "의류");
+insert into tbl_category
+(ct_num, ct_main, ct_middle, ct_sub)
+value (200, "가전제품", "가전제품", "가전제품");
+insert into tbl_category
+(ct_num, ct_main, ct_middle, ct_sub)
+value (300, "도서문구", "도서문구", "도서문구");
+insert into tbl_category
+(ct_num, ct_main, ct_middle, ct_sub)
+value (400, "가구", "가구", "가구");
+insert into tbl_category
+(ct_num, ct_main, ct_middle, ct_sub)
+value (500, "차량", "차량", "차량");
+insert into tbl_category
+(ct_num, ct_main, ct_middle, ct_sub)
+value (2200, "기타", "기타", "기타");
+
+
+
+/* table tbl_sboard */ 
+select * from tbl_sboard;
+insert into tbl_sboard
+(sb_num, sb_writer, sb_nickname, sb_name, sb_detail, Total_price, Total_quantity, ct_num, trade_shape, 
+trade_progress, sb_view) 
+value
+(55, "start", "start", "사무용 책상 팝니다.",  "사무용 의자 책상팝니다. 상태가 좋습니다 웬만하면 내고해드려여 연락주세요",
+100000, 1, 100, "직거래", "미거래", "chair2.jpg");
+
+insert into tbl_sboard
+(sb_writer, sb_name, sb_detail, Total_price, Total_quantity, ct_num, trade_shape) 
+value
+("testid1", "전기난로 판매합니다.",  "전기난로 판매합니다. 상태는 꽤 괜찮고요 앞으로 2~3년 더쓰는데는 문제 없을 것 같아요",
+100000, 1, 110, "직거래");
+
+
+insert into tbl_sboard 
+  (sb_num, sb_writer, sb_nickname, sb_name, sb_detail, Total_price, 
+   Total_quantity, ct_num, trade_shape, sb_view, trade_area)
+value(2, "test1", "test", "사무용 책상 팝니다.",  "사무용 의자 책상팝니다. ㅇㅇㅇㅇ팝니다. ㅇㅇㅇㅇ팝니다. ㅇㅇㅇㅇ팝니다. ㅇㅇㅇㅇ",
+        100000, 1, 100, "직거래", "main_banner11_1200x350.png", "신관동");
+
+/* table tbl_view */ 
+desc tbl_view;
+select * from tbl_view;
+
+insert into tbl_view (sb_num, view_name)
+value (1, "chair2.jpg");
+insert into tbl_view (sb_num, view_name)
+value (2, "main_banner2_1200x350.png");
+insert into tbl_view (sb_num, view_name)
+value (3, "main_banner3_1200x350.png");
+insert into tbl_view (sb_num, view_name)
+value (4, "main_banner4_1200x350.png");
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select
+  case 
+    when count(*)=0
+      then 0
+    else
+      count(*)
+    end as numb
+from
+  tbl_bookmark
+where
+  sb_num=3 and
+  sb_writer="real123";
+    
+    
+
+
+-- UPDATE 테이블이름
+-- SET 필드이름1=데이터값1, 필드이름2=데이터값2, ...
+-- WHERE 필드이름=데이터값
+delete from tbl_sboard
+where sb_num=3;
+
+update tbl_sboard
+set trade_progress="판매중"
+where sb_num=1;
+
+select version();
+
+SHOW VARIABLES LIKE '%VERSION%';
+
+delete from tbl_bookMark
+where sb_num=1 and sb_writer="real123";
+
+
+
+
+
+
+
+
+
+
+SELECT VERSION();
+use cen_market;
+use mysql;
+select host,user from user;
+
+show databases;
+show table status;
 
 
