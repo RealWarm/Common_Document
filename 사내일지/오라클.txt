@@ -38,6 +38,10 @@ tnsnames.ora : 간단히 설명하자면 클라이언트가 oracle 서버에 접
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 기본 명령어
 
+--전체 테이블 조회
+select * from all_tables where owner = '[유저명]';
+select * from all_tables where tablespace_name = '[테이블스페이스명]';
+
 현재 생성된 계정 확인
 SELECT * FROM DBA_USERS;
 SELECT * FROM ALL_USERS;
@@ -75,7 +79,8 @@ from
 exec dbms_xdb.sethttpport(8081);
 =========================================================================
 +++++++++++++++ 테이블 스페이스 +++++++++++++++
--- @@@ 테이블 스페이스 생성
+
+@@@ 테이블 스페이스 생성
 create tablespace cen_care --[테이블 스페이스명]
 datafile 'D:\dev\oradata' --파일경로
 size 10M --초기 데이터 파일 크기 설정
@@ -83,10 +88,10 @@ autoextend on next 10M -- 초기 크기 공간을 모두 사용하는 경우 자
 maxsize 100M -- 데이터파일이 최대로 커질 수 있는 크기 지정 기본값 = unlimited
 uniform size 1M -- EXTENT 한개의 크기를 설정
 
--- @@@ 전체 테이블 스페이스 조회
+@@@ 전체 테이블 스페이스 조회
 select * from dba_tablespaces;
 
--- @@@ 전체 테이블 스페이스 경로 및 용량 조회
+@@@ 전체 테이블 스페이스 경로 및 용량 조회
 SELECT    
     A.TABLESPACE_NAME "테이블스페이스명",
     A.FILE_NAME "파일경로",
@@ -160,10 +165,8 @@ default tablespace ts_com;
 -- 3. 권한 부여
 GRANT connect, resource, dba to com;
 
-
-
-
-
+@@@@ 유저 테이블 스페이스 변경
+- alter user [유저명] default tablespace [테이블스페이스명];
 
 PK 생성
 ALTER TABLE [테이블명] ADD CONSTRAINT [PK명] PRIMARY KEY ([컬럼명,컬럼명..])
