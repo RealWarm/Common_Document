@@ -214,3 +214,27 @@ public class UsingReflectionToDestroySingleton {
 
 - java의 reflection은 매우 강력하다. 설령 class 의 생성자가 private 일지라도 강제로 가져와서 새로운 인스턴스 생성이 가능하다. (singleton pattern을 깨뜨리는 것이 가능하다)
 =========================================================================
+<bean init-method=""> 은 싱글톤이다.
+
+thread 최대 사이즈 >> 적정값은 상황에 따라 다르기 때문에 찾아야한다.
+
+싱글톤 >> 경합 >> 성능저하!
+
+빈 스코프 >> 싱글톤
+
+dao service cotroller >> static이 아닌 멤버 변수 설정하면 안됨
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
