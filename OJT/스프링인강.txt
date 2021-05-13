@@ -1,3 +1,5 @@
+=========================================================================
+
 인프런 3강
 pom.xml
 - 필요한 모듈을 가져오기 위한 파일
@@ -6,3 +8,89 @@ pom.xml
 
 메이븐
 - 라이브러리를 연결해주고, 빌드를 위한 플랫폼
+=========================================================================
+10.6 작업 스케줄링과 비동기 실행
+TaskExecutor  : java.lang.Runnable 작업을 비동기적으로 실행할 수 있다.
+TaskScheduler : java.lang.Runnable 작업 실행 스케줄을 지정할 수 있다.
+
+@Async : 메소드를 비동기적으로 실행
+@Scheduled : 메소드의 실행 스케줄을 지정
+=========================================================================
+10.6.1 TaskExecutor 인터페이스
+
+- 자바 5부터 java.lang.Runnable 작업을 실행하기 위한 실행기라는 개념이 도입됨
+- java.util.concurrent.Executor 인터페이스를 구현한다
+- 내부에 execute(Runnable runnable)라는 메서드만 들어 있다 >> java.lang.Runnable 
+- java.util.concurrent.Executor 인터페이스를 확장한다
+- 스프링은 app의 요구 사항에 따라 선택할 수 있는 몇 가지 TaskExecutor 구현을 제공한다.
+	1) ThreadPoolTaskExecutor : 스레드 풀에서 얻은 스레드를 사용해, 비동기적으로 작업을 실행
+	2) SyncTaskExecutor : 작업을 동기적으로 실행
+	3) SimpleAsyncTaskExecutor : 각 작업을 새로운 스레드에서 실행
+	4) WorkManagerTaskExecutor : commonJ의 WorkManager를 사용하여 작업을 실행한다
+- ThreadPoolTaskExecutor
+	1) 가장 흔히 쓰이는 TaskExecutor 구현이다
+	2) 자바 5의 ThreadPoolExecutor를 사용해 작업을 실행한다
+	3) 인스턴스를 xml 파일에서 설정한다
+
+
+++ 스프링 빈을 통해서 ThreadPoolTaskExecutor 인스턴스 설정하기
+
+<bean id="myTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" /> 		<!-- 스레드 풀의 최소 스레드수 -->
+		<property name="maxPoolSize"  value="10" />		<!-- 스레드 풀에 들어올 수 있는 스레드 개수의 최댓값 -->
+		<property name="queueCapacity" value="15" />	<!-- 스레드 풀의 모든 스레드가 작업중일때, 대기열에 기다릴 수 있는 작업 개수의 최댓값-->
+		<property name="rejectedExecutionHandler" ref="abortPolicy" />		<!-- ThreadPoolExecutor가 거부한 작업을 처리하는 핸들러를 지정한다 -->
+		<!-- 큐가 꽉찼고 스레드 풀에 제출한 작업을 수행할 수 있는 가용 스레드가 없는 경우 ThreadPoolExecutor가 작업을 거부한다. -->
+		<!-- rejectedExecutionHandler 프로퍼티는 java.util.concurrent.RejectedExecutionHandler 객체의 인스턴스를 참조해야 한다 -->
+	</bean>
+	
+	<bean id="abortPolicy" class="java.util.concurrent.ThreadPoolExecutor.AbortPolicy"/>
+	<!-- rejectedExecutionHandler 프로퍼티는 항상 RejectedExecutionExecption 예외를 던지는  
+		 java.util.concurrent.ThreadPoolExecutor.AbortPolicy 핸들러를 가리킨다
+		 사용할 수 있는 다른 핸들러로는 
+		 java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy 	(거부한 작업을 호출자 스레드에서 실행함),
+		 java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy(핸들러가 대기열에서 가장 오래된 작업을 버리고 거부된 작업을 실행하기 위해 재시도함),
+		 java.util.concurrent.ThreadPoolExecutor.DiscardPolicy      (핸들러가 거부된 작업을 버림)
+		 가 있다.-->
+
+++ 스프링 task 스키마를 사용해 ThreadPoolTaskExecutor 설정하기
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						https://www.springframework.org/schema/beans/spring-beans.xsd
+						 http://www.springframework.org/schema/task
+						 http://www.springframework.org/schema/task/spring-task.xsd"						 						
+	xmlns:task="http://www.springframework.org/schema/task">
+	
+	<!-- 스프링 task 스키마의 <executor> 엘리먼트를 사용하여 ThreadPoolTaskExecutor 인스턴스를 쉽게 설정할 수 있다-->
+	<task:executor id="myTaskExecutor" pool-size="5-10" 
+				   queue-capacity="15" rejection-policy="ABORT"/>
+	<!-- pool-size : 핵심 풀 크기 - 최대 풀 크기 
+		 queue-capacity : queueCapacity 프로퍼티를 설정한다
+		 rejection-policy
+		 1) 거부당한 작업을 처리할 핸들러를 지정한다
+		 2) 속성값으로는 ABORT, CALLER_RUNS, DISCARD_OLDEST, DISCARD가 가능하다 -->
+
+=========================================================================
+10.6.2 TaskScheduler 인터페이스
+
+- java.lang.Runnable 작업 스케줄링을 추상화한다
+- Trigger 인터페이스는 java.lang.Runnable 작업 실행 시간을 추상화 한다
+- TaskScheduler 인스턴스와 Trigger 인스턴스를 연관시켜서 스케줄을 정한 후 
+  java.lang.Runnable 작업을 실행할 수 있다
+- 작업을 주기적으로 실행하려면 PeriodicTrigger(Trigger 인터페이스를 구현)를 사용한다
+- CronTrigger(Trigger 인터페이스를 구현)는 작업을 실행할 날짜나 시간을 지정하는 크론식을 받을 수 있다
+- ThreadPoolTaskScheduler는 TaskScheduler 구현 중 가장 널리 쓰인다
+- ThreadPoolTaskScheduler는 내부적으로 스프링 5의 ScheduledThreadPoolExecutor를 사용해 작업을 실행한다
+- ThreadPoolTaskScheduler 구현을 설정하고 Trigger 구현과 연관시켜 작업을 스케줄링할 수 있다
+
++++ ThreadPoolTaskScheduler 설정하고 사용하는 방법
+
+
+
+=========================================================================
+
+=========================================================================

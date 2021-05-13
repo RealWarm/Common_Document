@@ -411,12 +411,53 @@ INSERT INTO COMTNWEBLOG
 ++++++++++++++ 오늘 이룬것 ++++++++++++++
 
 =========================================================================
-++ 5월 일 요일
+++ 5월 일 14요일
 
 ++++++++++++++ 공 지 사 항 ++++++++++++++
 
 
 ++++++++++++++ 오늘의 목표 ++++++++++++++
+@Resource xml에 등록안하나?
+스프링 핸들러가 뭐지?
+annotation-driven
+
+- 로그인 Action 부하많이 : 웹로그 DB에 Insert (지연발생)
+> 웹로그 기능제거 후 성능테스트
+   >> src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-servlet.xml (47Line 주석처리)
+   >> connection오류, socket오류 발생을 확인하여 복구
+> 로깅을 비동기 방식으로 변경
+   >> COMTNWEBLOG 관련 로깅처리가 Interceptor로 처리되어있어 해당 파트를 ThreadPool처리함
+   >> context-common.xml (211Line) ThreadPoolTaskExecutor 관련 설정항목 추가
+   >> src/main/java/egovframework/com/cmm/util/EgovWebLogger.java 생성 : 웹로그 트랜잭션 분리
+   >> src/main/java/egovframework/com/sym/log/wlg/service/EgovWebLogService.java : logInsertWebLog 메소드 주석처리
+   >> src/main/java/egovframework/com/sym/log/wlg/service/impl/EgovWebLogServiceImpl.java : logInsertWebLog 메소드 주석처리
+   >> src/main/java/egovframework/com/sym/log/wlg/web/EgovWebLogInterceptor.java : logInsertWebLog 메소드를 EgovWebLogger클래스로 변경
+
+
+ajp worker >> web에서 와스로
+
+커넥션 부족? 디비 1000, 
+
+29990
+wildfly qwer
+
+1000 여기에는 다른 일을 하는데 스레드를 쓸 수도 있지 않을까? >> 그럼 db 커넥션 못하는것도 있지 않을까?
+
+
++++ 그때 에러는 왜 발생 한거지?
+
++++++++ 대리님 특강 +++++++
+웹브라우저 - web - was - db
+
+web-was : 쓰레드 800개
+
+우리가 등록한 스레드는 @Async가 붙은 메소드에만 사용되는 스레드이다
+이 스레드는 DB와 연동 될 수 있고, 다른 일을 할 수 있다.
+
+그리고 다른 쓰레드들은 DB와 연결되는데 기존의 스레드로 연결 될 수 있다
+
+
+
 
 
 ++++++++++++++ 오늘 이룬것 ++++++++++++++
